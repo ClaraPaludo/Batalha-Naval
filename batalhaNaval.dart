@@ -18,13 +18,13 @@ List<List<String>> iniciaTabuleiro(int tamanho) {
   List<List<String>> tabuleiro = [];
 
 
-  for (int i = 0; i < tamanho; i++) {
+  for (int i = 1; i < tamanho; i++) { //faz as linhas inicarem com 1 e irem de 1 em 1
 
 
     List<String> linha = [];
 
 
-    for (int j = 0; j < tamanho; j++) {
+    for (int j = 1; j < tamanho; j++) { // mesma coisa que a linha só que com as colunas
       linha.add("~");
     }
 
@@ -44,10 +44,10 @@ void mostrarTabuleiro(List<List<String>> tabuleiro){
   print("\nTABULEIRO:");
 
 
-  for(int i = 0; i < tabuleiro.length; i++){
+  for(int i = 1; i < tabuleiro.length; i++){
 
 
-    for(int j = 0; j < tabuleiro[i].length; j++){
+    for(int j = 1; j < tabuleiro[i].length; j++){
       stdout.write(tabuleiro[i][j] + " ");
     }
 
@@ -66,6 +66,8 @@ int tamanhoNavio(String jogador){
   print("${jogador}, digite o tamanho do seu navio:");
 
 
+
+
   String? input = stdin.readLineSync();
 
 
@@ -82,29 +84,37 @@ int tamanhoNavio(String jogador){
 // atribui navio
 List<Ponto> atribuiNavio(String jogador, int tamanhoTabuleiro){
 
-
   int tamanho = tamanhoNavio(jogador);
 
+  // 🔥 VALIDAÇÃO DO TAMANHO DO NAVIO
+  while (tamanho > tamanhoTabuleiro) {
 
-  print("${jogador}, escolha a linha inicial do navio (0 a ${tamanhoTabuleiro-1})");
+    print(" O tamanho do navio é maior que o tabuleiro!");
+    print("Digite outro tamanho entre 1 e 16:");
 
+    tamanho = tamanhoNavio(jogador);
+  }
 
+  print("${jogador}, escolha a linha inicial do navio (1 a ${tamanhoTabuleiro-1})");
   int linha = int.parse(stdin.readLineSync()!);
 
-
-  print("${jogador}, escolha a coluna inicial do navio (0 a ${tamanhoTabuleiro-1})");
-
-
+  print("${jogador}, escolha a coluna inicial do navio (1 a ${tamanhoTabuleiro-1})");
   int coluna = int.parse(stdin.readLineSync()!);
 
+  //  VALIDAÇÃO DE POSIÇÃO
+  while (coluna + tamanho > tamanhoTabuleiro) {
+
+    print("❌ O navio não cabe nessa posição!");
+    print("Escolha outra coluna:");
+
+    coluna = int.parse(stdin.readLineSync()!);
+  }
 
   List<Ponto> navio = [];
-
 
   for(int i = 0; i < tamanho; i++){
     navio.add(Ponto(linha, coluna + i));
   }
-
 
   return navio;
 }
@@ -114,7 +124,7 @@ List<Ponto> atribuiNavio(String jogador, int tamanhoTabuleiro){
 bool calcularPlacar(Ponto ataque, List<Ponto> navio){
 
 
-  for(int i = 0; i < navio.length; i++){
+  for(int i = 1; i < navio.length; i++){
 
 
     if(ataque.linha == navio[i].linha && ataque.coluna == navio[i].coluna){
@@ -135,7 +145,7 @@ bool calcularPlacar(Ponto ataque, List<Ponto> navio){
 void run(){
 
 
-  int tamanho = 10;
+  int tamanho = 16;
 
 
   List<List<String>> tabuleiro = iniciaTabuleiro(tamanho);
